@@ -135,6 +135,7 @@ func (h Handler) syncDistributedRead(ctx context.Context) error {
 	otherStates := make([]rlState, 0, len(instanceFiles)-1)
 
 	for _, instanceFile := range instanceFiles {
+		h.logger.Warn("instanceFile: " + instanceFile)
 		// skip our own file
 		if strings.HasSuffix(instanceFile, h.Distributed.instanceID+".rlstate") {
 			continue
