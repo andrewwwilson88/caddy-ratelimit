@@ -140,6 +140,10 @@ func (h Handler) syncDistributedRead(ctx context.Context) error {
 		if strings.HasSuffix(instanceFile, h.Distributed.instanceID+".rlstate") {
 			continue
 		}
+		// skip blank prefix
+		if strings.HasSuffix(instanceFile, "/rate_limit/instances/") {
+			continue
+		}
 
 		encoded, err := h.storage.Load(ctx, instanceFile)
 		if err != nil {
