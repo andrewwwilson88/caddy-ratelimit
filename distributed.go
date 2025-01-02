@@ -124,7 +124,7 @@ func writeRateLimitState(ctx context.Context, state rlState, instanceID string, 
 
 // syncDistributedRead loads all rate limiter states from other instances.
 func (h Handler) syncDistributedRead(ctx context.Context) error {
-	instanceFiles, err := h.storage.List(ctx, storagePrefix, false)
+	instanceFiles, err := h.storage.List(ctx, storagePrefix, true)
 	if err != nil {
 		return err
 	}
@@ -135,6 +135,7 @@ func (h Handler) syncDistributedRead(ctx context.Context) error {
 	otherStates := make([]rlState, 0, len(instanceFiles)-1)
 
 	for _, instanceFile := range instanceFiles {
+		h.logger.Warn("instanceFile: " + instanceFile)
 		// skip our own file
 		if strings.HasSuffix(instanceFile, h.Distributed.instanceID+".rlstate") {
 			continue
